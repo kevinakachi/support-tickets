@@ -55,9 +55,9 @@ if submitted:
 
     # Send an email notification to the buyer
 def send_email_notification(order_details):
-    sender_email = "kevin@bondiproduce.com"
+    sender_email = "kevin.akachi@tikomangos.com"
     receiver_email = "kevinakachi@gmail.com"
-    password = "K3vin@7799"
+    password = "Mango1995!"
 
     subject = f"New Special Order: {order_details['ID']}"
     body = f"""
