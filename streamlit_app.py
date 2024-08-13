@@ -57,7 +57,7 @@ if submitted:
     def send_email_notification(order_details):
         sender_email = "kevin@bondiproduce.com"
         receiver_email = "kevinakachi@gmail.com"
-        password = "K3vin@7799"
+        password = "K3vin@"
 
         subject = f"New Special Order: {order_details['ID']}"
         body = f"""
@@ -80,7 +80,7 @@ if submitted:
 
         # Connect to the email server and send the email
         try:
-            with smtplib.SMTP_SSL("smtp.bondiproduce.com", 465) as server:
+            with smtplib.SMTP_SSL("smtp.office365.com", 587) as server:
                 server.login(sender_email, password)
                 server.sendmail(sender_email, receiver_email, message.as_string())
             st.success("Email notification sent successfully!")
