@@ -37,13 +37,8 @@ if submitted:
                 "ID": f"ORDER-{recent_order_number}",
                 "Salesperson": salesperson,
                 "Product": product,
-                "Status": "Open",
-                "Priority": priority,
-                "PO#": po_number,
-                "ETA": eta,
+                "Requested": delivery,
                 "Date Submitted": today,
-                "Sales Confirmation": "Pending",
-                "SO#": None,
             }
         ]
     )
