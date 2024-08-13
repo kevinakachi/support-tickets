@@ -1,4 +1,4 @@
-import datetime
+eimport datetime
 import pandas as pd
 import streamlit as st
 
@@ -37,7 +37,7 @@ if submitted:
                 "ID": f"ORDER-{recent_order_number}",
                 "Salesperson": salesperson,
                 "Product": product,
-                "Requested": delivery,
+                "Requested Delivery Date": delivery,
                 "Date Submitted": today,
             }
         ]
