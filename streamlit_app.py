@@ -24,8 +24,7 @@ st.header("Add a Special Order")
 
 with st.form("add_order_form"):
     salesperson = st.selectbox("Salesperson", ["Ezio", "Kris", "Greg", "Barry", "Hillary", "Ross", "Diana", "Eren", "Mike", "Alex"])
-    product = st.text_input("Product")
-    quantity = st.number_input("Quantity", min_value=1)
+    product = st.text_input("Quantity and Product Description ("2 cases of ______")")
     priority = st.selectbox("Priority", ["High", "Medium", "Low"])
     po_number = st.text_input("Purchase Order (PO#)")
     eta = st.date_input("ETA")
