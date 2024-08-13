@@ -57,7 +57,7 @@ if submitted:
 def send_email_notification(order_details):
     sender_email = "kevinakachi@gmail.com"
     receiver_email = "kevin.akachi@tikomangos.com"
-    password = "xqyk ghdy sacv twqc"
+    password = "xqykghdysacvtwqc"
 
     subject = f"New Special Order: {order_details['ID']}"
     body = f"""
@@ -80,7 +80,7 @@ def send_email_notification(order_details):
 
     try:
         # Connect to the Office 365 SMTP server using starttls
-        with smtplib.SMTP("smtp.office365.com", 587) as server:
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
             server.starttls()  # Secure the connection
             server.login(sender_email, password)
             server.sendmail(sender_email, receiver_email, message.as_string())
