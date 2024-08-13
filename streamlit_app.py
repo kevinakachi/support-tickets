@@ -114,11 +114,20 @@ else:
         icon="✍️",
     )
 
-    # Show the orders dataframe with `st.data_editor`.
+    # Allow editing for specific columns
     edited_df = st.data_editor(
         st.session_state.df,
         use_container_width=True,
         hide_index=True,
-        disabled=["ID", "Date Submitted", "Salesperson", "Type", "Quantity and Product", "Requested Delivery Date", "SO#"],
+        disabled=["ID", "Date Submitted"],
+        column_config={
+            "Salesperson": st.column_config.TextColumn("Salesperson"),
+            "Type": st.column_config.SelectboxColumn(
+                "Type",
+                options=["One Time", "Keep Inventory"],
+            ),
+            "Quantity and Product": st.column_config.TextColumn("Quantity and Product"),
+            "Requested Delivery Date": st.column_config.DateColumn("Requested Delivery Date"),
+            "SO#": st.column_config.TextColumn("Sales Order (SO#)")
+        }
     )
-
