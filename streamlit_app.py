@@ -54,60 +54,48 @@ if submitted:
     st.session_state.df = pd.concat([df_new, st.session_state.df], axis=0)
 
     # Send an email notification to the buyer
-    def send_email_notification(order_details):
-        sender_email = "kevin@bondiproduce.com"
-        receiver_email = "kevinakachi@gmail.com"
-        password = "K3vin@"
+def send_email_notification(order_details):
+    sender_email = "kevin@bondiproduce.com"
+    receiver_email = "kevinakachi@gmail.com"
+    password = "K3vin@7799"
 
-        subject = f"New Special Order: {order_details['ID']}"
-        body = f"""
-        A new special order has been submitted.
+    subject = f"New Special Order: {order_details['ID']}"
+    body = f"""
+    A new special order has been submitted.
 
-        Salesperson: {order_details['Salesperson']}
-        Product: {order_details['Quantity and Product']}
-        Requested Delivery Date: {order_details['Requested Delivery Date']}
-        Date Submitted: {order_details['Date Submitted']}
+    Salesperson: {order_details['Salesperson']}
+    Product: {order_details['Quantity and Product']}
+    Requested Delivery Date: {order_details['Requested Delivery Date']}
+    Date Submitted: {order_details['Date Submitted']}
 
-        Please proceed with the order.
-        """
+    Please proceed with the order.
+    """
 
-        # Email setup
-        message = MIMEMultipart()
-        message["From"] = sender_email
-        message["To"] = receiver_email
-        message["Subject"] = subject
-        message.attach(MIMEText(body, "plain"))
+    # Email setup
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = subject
+    message.attach(MIMEText(body, "plain"))
 
-        # Connect to the email server and send the email
-        try:
-            with smtplib.SMTP_SSL("smtp.office365.com", 587) as server:
-                server.login(sender_email, password)
-                server.sendmail(sender_email, receiver_email, message.as_string())
-            st.success("Email notification sent successfully!")
-        except Exception as e:
-            st.error(f"Failed to send email: {str(e)}")
+    try:
+        # Connect to the Office 365 SMTP server using starttls
+        with smtplib.SMTP("smtp.office365.com", 587) as server:
+            server.starttls()  # Secure the connection
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, message.as_string())
+        st.success("Email notification sent successfully!")
+    except Exception as e:
+        st.error(f"Failed to send email: {str(e)}")
 
-    # Send email notification
-    send_email_notification(df_new.iloc[0])
+# Example usage with the order details
+order_details = {
+    "ID": "ORDER-123",
+    "Salesperson": "Ezio",
+    "Quantity and Product": "5 cases of apples",
+    "Requested Delivery Date": "2024-08-13",
+    "Date Submitted": "2024-08-13"
+}
 
-# Show section to view and edit existing orders in a table.
-st.header("Existing Special Orders")
-if st.session_state.df.empty:
-    st.write("No special orders have been submitted yet.")
-else:
-    st.write(f"Number of orders: `{len(st.session_state.df)}`")
-
-    st.info(
-        "You can edit the orders by double-clicking on a cell.",
-        icon="✍️",
-    )
-
-# Show the orders dataframe with `st.data_editor`.
-edited_df = st.data_editor(
-    st.session_state.df,
-    use_container_width=True,
-    hide_index=True,
-    # Since we're not using Status and Priority, no need to include column_config
-    disabled=["ID", "Date Submitted", "Salesperson", "Quantity and Product", "Requested Delivery Date"],
-)
-  
+# Send email notification
+send_email_notification(order_details)
