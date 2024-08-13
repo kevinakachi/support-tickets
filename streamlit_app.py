@@ -16,7 +16,7 @@ st.write(
 
 # Initialize an empty DataFrame if not already in session state.
 if "df" not in st.session_state:
-    columns = ["ID", "Salesperson", "Product", "Quantity", "Status", "Priority", "PO#", "ETA", "Date Submitted", "Sales Confirmation", "SO#"]
+    columns = ["ID", "Salesperson", "Product", "Status", "Priority", "PO#", "ETA", "Date Submitted", "Sales Confirmation", "SO#"]
     st.session_state.df = pd.DataFrame(columns=columns)
 
 # Show a section to add a new special order.
@@ -39,7 +39,6 @@ if submitted:
                 "ID": f"ORDER-{recent_order_number}",
                 "Salesperson": salesperson,
                 "Product": product,
-                "Quantity": quantity,
                 "Status": "Open",
                 "Priority": priority,
                 "PO#": po_number,
@@ -96,7 +95,7 @@ else:
                 required=True,
             ),
         },
-        disabled=["ID", "Date Submitted", "Salesperson", "Product", "Quantity", "PO#", "ETA"],
+        disabled=["ID", "Date Submitted", "Salesperson", "Product", "PO#", "ETA"],
     )
 
 # Show some metrics and charts about the orders, only if there is data.
