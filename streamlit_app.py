@@ -19,7 +19,7 @@ st.write(
 
 # Initialize an empty DataFrame if not already in session state.
 if "df" not in st.session_state:
-    columns = ["ID", "Salesperson", "Quantity and Product", "Requested Delivery Date", "Date Submitted"]
+    columns = ["ID", "Salesperson", "Type", "Quantity and Product", "Requested Delivery Date", "Date Submitted", "SO#"]
     st.session_state.df = pd.DataFrame(columns=columns)
 
 # Show a section to add a new special order.
@@ -27,8 +27,8 @@ st.header("Add a Special Order")
 
 with st.form("add_order_form"):
     salesperson = st.selectbox("Salesperson", ["Ezio", "Kris", "Greg", "Barry", "Hillary", "Ross", "Diana", "Eren", "Mike", "Alex"])
-
-        # Add the Type dropdown menu
+    
+    # Add the Type dropdown menu
     order_type = st.selectbox("Type", ["One Time", "Keep Inventory"])
 
     # Conditional input field for SO# if "One Time" is selected
@@ -42,7 +42,7 @@ with st.form("add_order_form"):
 
 if submitted:
     recent_order_number = 1 if st.session_state.df.empty else int(max(st.session_state.df.ID).split("-")[1]) + 1
-    today = datetime.datetime.now().strftime("%m-%d-%Y")
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
     df_new = pd.DataFrame(
         [
             {
@@ -57,13 +57,51 @@ if submitted:
         ]
     )
 
-    # Show a little success message.
+    # Show a success message and display the order details
     st.write("Order submitted! Here are the order details:")
     st.dataframe(df_new, use_container_width=True, hide_index=True)
     
     # Append the new entry to the session state DataFrame
     st.session_state.df = pd.concat([df_new, st.session_state.df], axis=0)
-    
+
+    # Send an email notification to the buyer
+    def send_email_notification(order_details):
+        sender_email = "kevinakachi@gmail.com"
+        receiver_email = "kevin.akachi@tikomangos.com"
+        password = "your_app_password"
+
+        subject = f"New Special Order: {order_details['ID']}"
+        body = f"""
+        A new special order has been submitted.
+
+        Salesperson: {order_details['Salesperson']}
+        Product: {order_details['Quantity and Product']}
+        Requested Delivery Date: {order_details['Requested Delivery Date']}
+        Date Submitted: {order_details['Date Submitted']}
+
+        Please proceed with the order.
+        """
+
+        # Email setup
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        message["To"] = receiver_email
+        message["Subject"] = subject
+        message.attach(MIMEText(body, "plain"))
+
+        try:
+            # Connect to the Gmail SMTP server using starttls
+            with smtplib.SMTP("smtp.gmail.com", 587) as server:
+                server.starttls()  # Secure the connection
+                server.login(sender_email, password)
+                server.sendmail(sender_email, receiver_email, message.as_string())
+            st.success("Email notification sent successfully!")
+        except Exception as e:
+            st.error(f"Failed to send email: {str(e)}")
+
+    # Send email notification only after form submission
+    send_email_notification(df_new.iloc[0])
+
 # Show section to view and edit existing orders in a table.
 st.header("Existing Special Orders")
 if st.session_state.df.empty:
@@ -76,56 +114,11 @@ else:
         icon="✍️",
     )
 
-# Show the orders dataframe with `st.data_editor`.
-edited_df = st.data_editor(
-    st.session_state.df,
-    use_container_width=True,
-    hide_index=True,
-    disabled=["ID", "Date Submitted", "Salesperson", "Type", "Quantity and Product", "Requested Delivery Date", "SO#"],
-)
-    # Send an email notification to the buyer
-def send_email_notification(order_details):
-    sender_email = "kevinakachi@gmail.com"
-    receiver_email = "kevin.akachi@tikomangos.com"
-    password = "xqykghdysacvtwqc"
+    # Show the orders dataframe with `st.data_editor`.
+    edited_df = st.data_editor(
+        st.session_state.df,
+        use_container_width=True,
+        hide_index=True,
+        disabled=["ID", "Date Submitted", "Salesperson", "Type", "Quantity and Product", "Requested Delivery Date", "SO#"],
+    )
 
-    subject = f"New Special Order: {order_details['ID']}"
-    body = f"""
-    A new special order has been submitted.
-
-    Salesperson: {order_details['Salesperson']}
-    Product: {order_details['Quantity and Product']}
-    Requested Delivery Date: {order_details['Requested Delivery Date']}
-    Date Submitted: {order_details['Date Submitted']}
-
-    Please proceed with the order.
-    """
-
-    # Email setup
-    message = MIMEMultipart()
-    message["From"] = sender_email
-    message["To"] = receiver_email
-    message["Subject"] = subject
-    message.attach(MIMEText(body, "plain"))
-
-    try:
-        # Connect to the Office 365 SMTP server using starttls
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
-            server.starttls()  # Secure the connection
-            server.login(sender_email, password)
-            server.sendmail(sender_email, receiver_email, message.as_string())
-        st.success("Email notification sent successfully!")
-    except Exception as e:
-        st.error(f"Failed to send email: {str(e)}")
-
-# Example usage with the order details
-order_details = {
-    "ID": "ORDER-123",
-    "Salesperson": "Ezio",
-    "Quantity and Product": "5 cases of apples",
-    "Requested Delivery Date": "2024-08-13",
-    "Date Submitted": "2024-08-13"
-}
-
-# Send email notification
-send_email_notification(order_details)
