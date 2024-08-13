@@ -68,7 +68,7 @@ if submitted:
     def send_email_notification(order_details):
         sender_email = "kevinakachi@gmail.com"
         receiver_email = "kevin.akachi@tikomangos.com"
-        password = "your_app_password"
+        password = "xqykghdysacvtwqc"
 
         subject = f"New Special Order: {order_details['ID']}"
         body = f"""
