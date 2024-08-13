@@ -16,7 +16,7 @@ st.write(
 
 # Initialize an empty DataFrame if not already in session state.
 if "df" not in st.session_state:
-    columns = ["ID", "Salesperson", "Product", "Status", "Priority", "PO#", "ETA", "Date Submitted", "Sales Confirmation", "SO#"]
+    columns = ["ID", "Salesperson", "Quantity and Product", "Requested Delivery Date", "Date Submitted"]
     st.session_state.df = pd.DataFrame(columns=columns)
 
 # Show a section to add a new special order.
@@ -25,9 +25,7 @@ st.header("Add a Special Order")
 with st.form("add_order_form"):
     salesperson = st.selectbox("Salesperson", ["Ezio", "Kris", "Greg", "Barry", "Hillary", "Ross", "Diana", "Eren", "Mike", "Alex"])
     product = st.text_input("Quantity and Product Description")
-    priority = st.selectbox("Priority", ["High", "Medium", "Low"])
-    po_number = st.text_input("Purchase Order (PO#)")
-    eta = st.date_input("ETA")
+    delivery = st.date_input("Requested Delivery Date")
     submitted = st.form_submit_button("Submit Order")
 
 if submitted:
