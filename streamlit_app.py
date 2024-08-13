@@ -27,6 +27,15 @@ st.header("Add a Special Order")
 
 with st.form("add_order_form"):
     salesperson = st.selectbox("Salesperson", ["Ezio", "Kris", "Greg", "Barry", "Hillary", "Ross", "Diana", "Eren", "Mike", "Alex"])
+
+        # Add the Type dropdown menu
+    order_type = st.selectbox("Type", ["One Time", "Keep Inventory"])
+
+    # Conditional input field for SO# if "One Time" is selected
+    so_number = None
+    if order_type == "One Time":
+        so_number = st.text_input("Sales Order (SO#)")
+        
     product = st.text_input("Quantity and Product Description")
     delivery = st.date_input("Requested Delivery Date")
     submitted = st.form_submit_button("Submit Order")
@@ -39,9 +48,11 @@ if submitted:
             {
                 "ID": f"ORDER-{recent_order_number}",
                 "Salesperson": salesperson,
+                "Type": order_type,
                 "Quantity and Product": product,
                 "Requested Delivery Date": delivery,
                 "Date Submitted": today,
+                "SO#": so_number,
             }
         ]
     )
@@ -52,7 +63,26 @@ if submitted:
     
     # Append the new entry to the session state DataFrame
     st.session_state.df = pd.concat([df_new, st.session_state.df], axis=0)
+    
+# Show section to view and edit existing orders in a table.
+st.header("Existing Special Orders")
+if st.session_state.df.empty:
+    st.write("No special orders have been submitted yet.")
+else:
+    st.write(f"Number of orders: `{len(st.session_state.df)}`")
 
+    st.info(
+        "You can edit the orders by double-clicking on a cell.",
+        icon="✍️",
+    )
+
+# Show the orders dataframe with `st.data_editor`.
+edited_df = st.data_editor(
+    st.session_state.df,
+    use_container_width=True,
+    hide_index=True,
+    disabled=["ID", "Date Submitted", "Salesperson", "Type", "Quantity and Product", "Requested Delivery Date", "SO#"],
+)
     # Send an email notification to the buyer
 def send_email_notification(order_details):
     sender_email = "kevinakachi@gmail.com"
