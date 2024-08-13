@@ -37,7 +37,7 @@ if submitted:
                 "ID": f"ORDER-{recent_order_number}",
                 "Salesperson": salesperson,
                 "Product": product,
-                "Requested Delivery Date": delivery,
+                "Requested Delivery": delivery,
                 "Date Submitted": today,
             }
         ]
