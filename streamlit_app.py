@@ -102,24 +102,12 @@ else:
         icon="✍️",
     )
 
-    # Show the orders dataframe with `st.data_editor`.
-    edited_df = st.data_editor(
-        st.session_state.df,
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "Status": st.column_config.SelectboxColumn(
-                "Status",
-                help="Order status",
-                options=["Open", "In Progress", "Closed"],
-                required=True,
-            ),
-            "Priority": st.column_config.SelectboxColumn(
-                "Priority",
-                help="Priority",
-                options=["High", "Medium", "Low"],
-                required=True,
-            ),
-        },
-        disabled=["ID", "Date Submitted", "Salesperson", "Product", "Requested Delivery Date"],
-    )
+# Show the orders dataframe with `st.data_editor`.
+edited_df = st.data_editor(
+    st.session_state.df,
+    use_container_width=True,
+    hide_index=True,
+    # Since we're not using Status and Priority, no need to include column_config
+    disabled=["ID", "Date Submitted", "Salesperson", "Quantity and Product", "Requested Delivery Date"],
+)
+  
