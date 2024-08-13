@@ -27,7 +27,7 @@ if "df" not in st.session_state:
     # Generate the dataframe with 100 rows/orders.
     data = {
         "ID": [f"ORDER-{i}" for i in range(1100, 1000, -1)],
-        "Salesperson": np.random.choice(["John Doe", "Jane Smith", "Mike Lee"], size=100),
+        "Salesperson": np.random.choice(["Kris", "Greg", "Barry", "Hilary", "Mike", "Alex", "Diana", "Ross", "Eren"], size=100),
         "Product": np.random.choice(["Yellow Beans", "Green Beans", "Red Beans"], size=100),
         "Quantity": np.random.randint(1, 10, size=100),
         "Status": np.random.choice(["Open", "In Progress", "Closed"], size=100),
