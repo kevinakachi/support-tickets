@@ -80,7 +80,7 @@ if submitted:
 
         # Connect to the email server and send the email
         try:
-            with smtplib.SMTP_SSL("smtp.example.com", 465) as server:
+            with smtplib.SMTP_SSL("smtp.bondiproduce.com", 465) as server:
                 server.login(sender_email, password)
                 server.sendmail(sender_email, receiver_email, message.as_string())
             st.success("Email notification sent successfully!")
