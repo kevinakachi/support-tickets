@@ -8,12 +8,11 @@ import streamlit as st
 
 # Show app title and description.
 st.set_page_config(page_title="Sales Special Requests", page_icon="🎫")
-st.title("🎫 Support tickets")
+st.title("🎫 Sales Special Requests")
 st.write(
     """
-    This app shows how you can build an internal tool in Streamlit. Here, we are 
-    implementing a support ticket workflow. The user can create a ticket, edit 
-    existing tickets, and view some statistics.
+    Please submit your request using the form below. Try to be as clear and specific as posssible i.e. "2 cases of ______". 
+    The user can create a ticket, edit existing tickets, and view some statistics.
     """
 )
 
